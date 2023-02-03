@@ -1,4 +1,4 @@
-import webbrowser
+import webbrowser, time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -24,24 +24,43 @@ driver.get(url)
 
 classes = [
     "col-md-4",
-    "fixed-top main-nav-wrap",
-    "fuse-desktop-h-250 fuse-mobile-h-100 mt-4",
-    "resource-actions revision-notes row align-items-center",
-    "fuse-h-280 mb-5",
+    "fixed-top.main-nav-wrap",
+    "fuse-desktop-h-250.fuse-mobile-h-100.mt-4",
+    "resource-actions.revision-notes.row.align-items-center",
+    "fuse-h-280.mb-5",
     "resource-page-buttons",
     "download-pdf-ribbon",
     "resource-author",
-    "container-fluid main-footer",
-    "fixed-top main-nav-wrap"
+    "container-fluid.main-footer",
+    "fixed-top.main-nav-wrap"
 ]
 
 for class_name in classes:
-    driver.execute_script(f"document.querySelector('.{class_name}').remove();")
-
+    try:
+        driver.execute_script(f"document.querySelector('.{class_name}').remove();")
+    except Exception as e:
+        print(f"[ERROR]: {e}")
 driver.set_window_size(1920, 1080)
 
-screenshot = driver.get_screenshot_as_png()
-with open("screenshot.png", "wb") as f:
-    f.write(screenshot)
+# screenshot = driver.get_screenshot_as_png()
+# with open("screenshot.png", "wb") as f:
+#     f.write(screenshot)
+
+page_height = driver.execute_script("return document.body.scrollHeight")
+counter = 0
+
+print(f"[+] page_height: {page_height}")
+
+while True:
+    print("1")
+    driver.save_screenshot(f"screenshot_{counter}.png")
+    print("2")
+    counter += 1
+    driver.execute_script("window.scrollBy(0, window.innerHeight);")
+    new_page_height = driver.execute_script("return document.body.scrollHeight")
+    if new_page_height == page_height:
+        break
+    page_height = new_page_height
+    time.sleep(1)
 
 driver.quit()
