@@ -1,4 +1,4 @@
-import webbrowser, time
+import webbrowser, time, math
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -31,8 +31,7 @@ classes = [
     "resource-page-buttons",
     "download-pdf-ribbon",
     "resource-author",
-    "container-fluid.main-footer",
-    "fixed-top.main-nav-wrap"
+    "container-fluid.main-footer"
 ]
 
 for class_name in classes:
@@ -40,37 +39,23 @@ for class_name in classes:
         driver.execute_script(f"document.querySelector('.{class_name}').remove();")
     except Exception as e:
         print(f"[ERROR]: {e}")
+        
 driver.set_window_size(1920, 1080)
 
-# screenshot = driver.get_screenshot_as_png()
-# with open("screenshot.png", "wb") as f:
-#     f.write(screenshot)
-
 page_height = driver.execute_script("return document.body.scrollHeight")
-counter = 0
+windowinnerHeight = driver.execute_script("return window.innerHeight")
+scroll_how_many_times = math.ceil(page_height / windowinnerHeight)
 
-print(f"[+] page_height: {page_height}")
-
-
-while True:
+for i in range(int(scroll_how_many_times)):
+    i += 1
     # take ss
-    filename = f"screenshot_{counter}.png"
+    filename = f"screenshot_{i}.png"
     driver.save_screenshot(filename)
     print(f"[+] Saved {filename}")
-    counter += 1
     
     # scroll down
     driver.execute_script("window.scrollBy(0, window.innerHeight);") # works
-
-    new_page_height = driver.execute_script("return document.body.scrollHeight") #
     
-    print(f"[+] new_page_height: {new_page_height}")
-    print(f"[+] is new_page_height == page_height: {new_page_height == page_height}")
-    
-    if new_page_height == page_height:
-        break
-    
-    page_height = new_page_height
     time.sleep(1)
 
 driver.quit()
