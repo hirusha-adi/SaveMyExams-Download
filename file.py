@@ -9,7 +9,7 @@ options = Options()
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-gpu")
 options.add_argument("--disable-infobars")
-# options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument("--disable-impl-side-painting")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-setuid-sandbox")
@@ -42,20 +42,22 @@ for class_name in classes:
         
 driver.set_window_size(1920, 1080)
 
+current_page_title = driver.find_element(by=By.CLASS_NAME, value="resource-title").text
+
 page_height = driver.execute_script("return document.body.scrollHeight")
 windowinnerHeight = driver.execute_script("return window.innerHeight")
 scroll_how_many_times = math.ceil(page_height / windowinnerHeight)
 
 for i in range(int(scroll_how_many_times)):
     i += 1
+
     # take ss
-    filename = f"screenshot_{i}.png"
+    filename = f"{current_page_title}_{i}.png"
     driver.save_screenshot(filename)
     print(f"[+] Saved {filename}")
     
     # scroll down
     driver.execute_script("window.scrollBy(0, window.innerHeight);") # works
-    
     time.sleep(1)
 
 driver.quit()
