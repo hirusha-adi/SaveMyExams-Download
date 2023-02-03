@@ -51,15 +51,25 @@ counter = 0
 
 print(f"[+] page_height: {page_height}")
 
+
 while True:
-    print("1")
-    driver.save_screenshot(f"screenshot_{counter}.png")
-    print("2")
+    # take ss
+    filename = f"screenshot_{counter}.png"
+    driver.save_screenshot(filename)
+    print(f"[+] Saved {filename}")
     counter += 1
-    driver.execute_script("window.scrollBy(0, window.innerHeight);")
-    new_page_height = driver.execute_script("return document.body.scrollHeight")
+    
+    # scroll down
+    driver.execute_script("window.scrollBy(0, window.innerHeight);") # works
+
+    new_page_height = driver.execute_script("return document.body.scrollHeight") #
+    
+    print(f"[+] new_page_height: {new_page_height}")
+    print(f"[+] is new_page_height == page_height: {new_page_height == page_height}")
+    
     if new_page_height == page_height:
         break
+    
     page_height = new_page_height
     time.sleep(1)
 
