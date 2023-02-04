@@ -85,7 +85,7 @@ def loadOptions():
             options.add_argument(opt)
             print(colored(f"{dval['ok']}", 'green'))
         else:
-            userinp = input(colored(f"[?] {dval['q']} [Yes/no]: ")).strip().lower()
+            userinp = input(colored(f"[?] {dval['q']} [Yes/no]: ", "yellow")).strip().lower()
             if userinp.startswith('y') or userinp == "":
                 options.add_argument(opt)
                 print(colored(f"{dval['ok']}", 'green'))
@@ -204,7 +204,7 @@ def run():
     printBanner()
     urls = loadUrls()
     options = loadOptions()
-    yndel = input(colored("[?] Delete original files? [yes/No]: ", "red")).strip().lower()
+    yndel = input(colored("[?] Delete original files? [yes/No]: ", "yellow")).strip().lower()
     deleteimg = True
     if yndel.startswith("n"):
         deleteimg = False
