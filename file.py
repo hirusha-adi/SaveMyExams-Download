@@ -124,7 +124,7 @@ def combineImages(image_prefix):
 
 def saveImages(url, width, height, options):
     
-    print(colored(f"[+] Starting to save:\n\tURL: {url}\n\tWidth: {width}\n\tHeight: {height}\n[+] Starting Chrome Webdriver", 'green'))
+    print(colored(f"[+] Starting to save:\n\tURL: {url}\n\tWidth: {width}\n[+] Starting Chrome Webdriver", 'green'))
     driver = webdriver.Chrome(options=options)
     
     print(colored(f"[+] Loading URL: {url}", "green"))
@@ -145,18 +145,26 @@ def saveImages(url, width, height, options):
     for class_name in classes:
         try:
             driver.execute_script(f"document.querySelector('.{class_name}').remove();")
+            
+            # I DONT KNOW :-(
+            if class_name == "fuse-h-280.mb-5":
+                driver.execute_script(f"document.querySelector('.{class_name}')[0].remove();")
+                driver.execute_script(f"document.querySelector('.{class_name}')[1].remove();")
+            
             print(colored(f"[+] Removed element with  .{class_name}", "green"))
         except Exception as e:
             print(colored(f"[-]: Error removing '.{class_name}': {e}", "red"))
         
-    print(colored(f"[+] Setting window resolution to {width}x{height}", "green"))
-    driver.set_window_size(width, height)
-
     current_page_title = driver.find_element(by=By.CLASS_NAME, value="resource-title").text
     print(colored(f"[+] Resource Title: {current_page_title}", "green"))
 
     page_height = driver.execute_script("return document.body.scrollHeight")
+    
+    print(colored(f"[+] Setting window resolution to {width}x{page_height}", "green"))
+    driver.set_window_size(width, page_height)
+    
     windowinnerHeight = driver.execute_script("return window.innerHeight")
+    
     scroll_how_many_times = math.ceil(int(page_height) / int(windowinnerHeight))
     print(colored(f"[+] '{scroll_how_many_times}' images will be generated\n\tPage Height: {page_height}\n\tWindow Height: {windowinnerHeight}\n\tRatio: {int(page_height)/int(windowinnerHeight)}", "green"))
 
@@ -191,7 +199,7 @@ def run():
     urls = loadUrls()
     options = loadOptions()
     for url in urls:
-        datatmp = saveImages(url=url, width=580, height=1080, options=options)
+        datatmp = saveImages(url=url, width=764, options=options)
         combineImages(image_prefix=datatmp['image_prefix'])
         # deletePartImages(filenames=datatmp['filenames'])
         
