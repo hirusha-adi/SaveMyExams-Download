@@ -202,10 +202,15 @@ def run():
     printBanner()
     urls = loadUrls()
     options = loadOptions()
+    yndel = input(colored("[?] Delete original files? [yes/No]: ", "red")).strip().lower()
+    deleteimg = True
+    if yndel.startswith("n"):
+        deleteimg = False
     for url in urls:
         datatmp = saveImages(url=url, width=764, options=options)
         combineImages(image_prefix=datatmp['image_prefix'])
-        # deletePartImages(filenames=datatmp['filenames'])
+        if deleteimg:
+            deletePartImages(filenames=datatmp['filenames'])
         
     
 if __name__ == "__main__":
