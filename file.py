@@ -22,6 +22,9 @@ def loadUrls():
             return _file.readlines()
     except Exception as e:
         print(colored(f"[-] {e}" ,'red'))
+    finally:
+        input(colored("Press [ENTER] to close window", "magenta"))
+        exit()
 
 def loadOptions():
     options = Options()
@@ -214,5 +217,10 @@ def run():
         
     
 if __name__ == "__main__":
-    run()    
+    try:
+        run()
+    except Exception as e:
+        print(colored(f"Error: {e}", "red"))
+    finally:
+        input(colored("Press [ENTER] to close window", "magenta"))
     
