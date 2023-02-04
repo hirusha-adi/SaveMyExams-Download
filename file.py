@@ -175,7 +175,7 @@ def saveImages(url, width, options):
     ffilenames = []
     
     for i in range(int(scroll_how_many_times)):
-        filename = f"{current_page_title}_{i}.png"
+        filename = f"{current_page_title}_{i+1}.png"
         driver.save_screenshot(filename)
         ffilenames.append(filename)
         print(colored(f"[+] Saved: {filename}", "green"))
