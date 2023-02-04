@@ -101,7 +101,7 @@ def combineImages(image_prefix):
             print(colored(f"[-] Unable to open : Stopping the combining of images with prefix '{image_file}' : {e}", "red"))
             return
 
-    total_height = sum([image.height for image in images])
+    total_height = int(sum([image.height for image in images])) - 650
     width = max([image.width for image in images])
 
     print(colored(f"[+] Combining Images:\n\tImage Prefix: {image_prefix}\n\tNumber of Images: {len(image_files)}\n\tTotal Height: {total_height}\n\tMaximum Width: {width}", "green"))
@@ -122,7 +122,7 @@ def combineImages(image_prefix):
     
     print(colored(f"[+] Saved Final Image as {final_image_file}", "green"))
 
-def saveImages(url, width, height, options):
+def saveImages(url, width, options):
     
     print(colored(f"[+] Starting to save:\n\tURL: {url}\n\tWidth: {width}\n[+] Starting Chrome Webdriver", 'green'))
     driver = webdriver.Chrome(options=options)
@@ -131,16 +131,21 @@ def saveImages(url, width, height, options):
     driver.get(url)
 
     classes = [
-        "col-md-4",
-        "fixed-top.main-nav-wrap",
-        "fuse-desktop-h-250.fuse-mobile-h-100.mt-4",
-        "resource-actions.revision-notes.row.align-items-center",
-        "fuse-h-280.mb-5",
-        "resource-page-buttons",
-        "download-pdf-ribbon",
-        "resource-author",
-        "container-fluid.main-footer"
+        "col-md-4", # side bar to select section
+        "fixed-top.main-nav-wrap", # navbar
+        "fuse-desktop-h-250.fuse-mobile-h-100.mt-4", # top ad long
+        "resource-actions.revision-notes.row.align-items-center", # buttons
+        "fuse-h-280.mb-5", # mid ad 1, mid ad 2
+        "resource-page-buttons", # bottom buttons
+        "download-pdf-ribbon", # download pdf ribbon
+        "resource-author", # author info
+        "container-fluid.main-footer", # all footer
+        "fuse-ad-group", # every ad
+        "fuse-h-280.mb-4", # bottom ad
+        "fuse-h-280" # in ever mid and bottom ad
     ]
+
+    page_height = driver.execute_script("return document.body.scrollHeight")
 
     for class_name in classes:
         try:
@@ -158,10 +163,9 @@ def saveImages(url, width, height, options):
     current_page_title = driver.find_element(by=By.CLASS_NAME, value="resource-title").text
     print(colored(f"[+] Resource Title: {current_page_title}", "green"))
 
-    page_height = driver.execute_script("return document.body.scrollHeight")
     
     print(colored(f"[+] Setting window resolution to {width}x{page_height}", "green"))
-    driver.set_window_size(width, page_height)
+    driver.set_window_size(width, page_height-500)
     
     windowinnerHeight = driver.execute_script("return window.innerHeight")
     
@@ -170,7 +174,7 @@ def saveImages(url, width, height, options):
 
     ffilenames = []
     
-    for i in range(int(scroll_how_many_times)):
+    for i in range(int(1)):
         filename = f"{current_page_title}_{i}.png"
         driver.save_screenshot(filename)
         ffilenames.append(filename)
