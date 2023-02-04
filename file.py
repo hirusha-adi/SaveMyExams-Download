@@ -169,12 +169,12 @@ def saveImages(url, width, options):
     
     windowinnerHeight = driver.execute_script("return window.innerHeight")
     
-    scroll_how_many_times = math.ceil(int(page_height) / int(windowinnerHeight))
+    scroll_how_many_times = math.floor(int(page_height) / int(windowinnerHeight))
     print(colored(f"[+] '{scroll_how_many_times}' images will be generated\n\tPage Height: {page_height}\n\tWindow Height: {windowinnerHeight}\n\tRatio: {int(page_height)/int(windowinnerHeight)}", "green"))
 
     ffilenames = []
     
-    for i in range(int(1)):
+    for i in range(int(scroll_how_many_times)):
         filename = f"{current_page_title}_{i}.png"
         driver.save_screenshot(filename)
         ffilenames.append(filename)
