@@ -103,8 +103,8 @@ def combineImages(image_prefix):
             print(colored(f"[-] Unable to open : Stopping the combining of images with prefix '{image_file}' : {e}", "red"))
             return
 
-    total_height = int(sum([image.height for image in images])) - 650
-    width = max([image.width for image in images])
+    total_height = int(sum([image.height for image in images])) - 100
+    width = max([image.width for image in images])-50
 
     print(colored(f"[+] Combining Images:\n\tImage Prefix: {image_prefix}\n\tNumber of Images: {len(image_files)}\n\tTotal Height: {total_height}\n\tMaximum Width: {width}", "green"))
 
@@ -131,6 +131,8 @@ def saveImages(url, width, options):
     
     print(colored(f"[+] Loading URL: {url}", "green"))
     driver.get(url)
+    
+    driver.execute_script("document.body.style.zoom='125%'")
 
     classes = [
         "col-md-4", # side bar to select section
@@ -167,7 +169,7 @@ def saveImages(url, width, options):
 
     
     print(colored(f"[+] Setting window resolution to {width}x{page_height}", "green"))
-    driver.set_window_size(width, page_height-500)
+    driver.set_window_size(width, page_height)
     
     windowinnerHeight = driver.execute_script("return window.innerHeight")
     
@@ -196,9 +198,16 @@ def deletePartImages(filenames):
     for filename in filenames:
         try:
             os.remove(filename)
-            print(colored(f"[+] Deleted {filename}"))
+            print(colored(f"[+] Deleted {filename}", "green"))
         except Exception as e:
-            print(colored(f"[=] Error deleting {filename}: {e}"))
+            print(colored(f"[=] Error deleting {filename}: {e}", "red"))
+
+def getAllLinksOfPage(url):
+    pass
+
+def temo():
+    url = ""
+    getAllLinksOfPage(url=url)
 
 def run():
     printBanner()
@@ -209,7 +218,7 @@ def run():
     if yndel.startswith("n"):
         deleteimg = False
     for url in urls:
-        datatmp = saveImages(url=url, width=764, options=options)
+        datatmp = saveImages(url=url, width=2048, options=options)
         combineImages(image_prefix=datatmp['image_prefix'])
         if deleteimg:
             deletePartImages(filenames=datatmp['filenames'])
