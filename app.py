@@ -1,9 +1,15 @@
-import os, time, math
+import math
+import os
+import time
+
+import requests
+from bs4 import BeautifulSoup
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from termcolor import colored
-from PIL import Image
+
 
 def printBanner():
     print(colored("""  __                     _                 
@@ -203,21 +209,40 @@ def deletePartImages(filenames):
             print(colored(f"[=] Error deleting {filename}: {e}", "red"))
 
 def getAllLinksOfPage(url):
-    pass
-
-def temo():
-    url = ""
-    getAllLinksOfPage(url=url)
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    nav = soup.find("nav", class_="resources-nav")
+    if nav:
+        final_urls = set()
+        for link in nav.find_all("a"):
+            final_urls.add(f'https://www.savemyexams.co.uk{link.get("href")}')
+        print(colored(f"[+] Found {len(final_urls)} links \n\tfrom {url.strip().split('revision-notes')[0].split('www.savemyexams.co.uk')[-1]  + 'revision-notes'} \n\tof URL:{url.strip().split('revision-notes')[0]  + 'revision-notes'}", "green"))
+        return final_urls
+    else:
+        return [url]
 
 def run():
     printBanner()
+    
+    ynmoreurl = input(colored("[?] Load Sub URLs? [Yes/no]: ", "yellow")).strip().lower()
     urls = loadUrls()
+    final_urls = set()
+    if ynmoreurl.startswith("y") or ynmoreurl == '':
+        for url in urls:
+            suburlcollection = getAllLinksOfPage(url)
+            for suburl in suburlcollection:
+                final_urls.add(suburl)
+    else:
+        for url in urls:
+            final_urls.add(url)
+        print(colored(f"[+] Number of URLs: {len(final_urls)}", "green"))
+    
     options = loadOptions()
     yndel = input(colored("[?] Delete original files? [yes/No]: ", "yellow")).strip().lower()
     deleteimg = True
     if yndel.startswith("n"):
         deleteimg = False
-    for url in urls:
+    for url in final_urls:
         datatmp = saveImages(url=url, width=2048, options=options)
         combineImages(image_prefix=datatmp['image_prefix'])
         if deleteimg:
