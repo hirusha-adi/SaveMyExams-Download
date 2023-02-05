@@ -87,6 +87,6 @@ Please note that I, the creator of this Free and Open Source project hosted on G
 
 - Sample Output File
 
-![1 1 1 Expanding Brackets_final](https://user-images.githubusercontent.com/36286877/216762871-837f5909-0466-4f58-bde7-997a8940df45.png)
+![1 1 1 Expanding Brackets_final](https://user-images.githubusercontent.com/36286877/216818722-8aa0aa0e-2c34-4ca2-98c7-da156e19199f.png)
 
 
