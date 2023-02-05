@@ -130,3 +130,5 @@ dmypy.json
 *.html
 *.png
 output/SaveMyExams Downloader.exe
+output/
+*.exe
