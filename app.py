@@ -117,8 +117,13 @@ def combineImages(image_prefix):
                 f"[-] Unable to open : Stopping the combining of images with prefix '{image_file}' : {e}", "red"))
             return
 
-    total_height = int(sum([image.height for image in images])) - 100
-    width = max([image.width for image in images])-50
+    try:
+        total_height = int(sum([image.height for image in images])) - 100
+        width = max([image.width for image in images])-50
+    except Exception as e:
+        print(
+            colored(f"[+] Error in generating final image for {image_prefix}. Will SKIP it. {e}", "red"))
+        return False
 
     print(colored(
         f"[+] Combining Images:\n\tImage Prefix: {image_prefix}\n\tNumber of Images: {len(image_files)}\n\tTotal Height: {total_height}\n\tMaximum Width: {width}", "green"))
@@ -139,6 +144,8 @@ def combineImages(image_prefix):
     final_image.save(final_image_file)
 
     print(colored(f"[+] Saved Final Image as {final_image_file}", "green"))
+
+    return True
 
 
 def saveImages(url, width, options):
@@ -266,9 +273,13 @@ def run():
         deleteimg = False
     for url in final_urls:
         datatmp = saveImages(url=url, width=2048, options=options)
-        combineImages(image_prefix=datatmp['image_prefix'])
-        if deleteimg:
-            deletePartImages(filenames=datatmp['filenames'])
+        done = combineImages(image_prefix=datatmp['image_prefix'])
+        if done:
+            if deleteimg:
+                deletePartImages(filenames=datatmp['filenames'])
+        else:
+            # bugged file idk why
+            pass
 
 
 if __name__ == "__main__":
