@@ -277,9 +277,6 @@ def run():
         if done:
             if deleteimg:
                 deletePartImages(filenames=datatmp['filenames'])
-        else:
-            # bugged file idk why
-            pass
 
 
 if __name__ == "__main__":
