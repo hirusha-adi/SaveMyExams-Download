@@ -8,3 +8,19 @@
 # Disclaimer
 
 Please note that I, the creator of this Free and Open Source project hosted on Github, cannot be held responsible for any actions taken using this script. The purpose of this script is solely to capture screenshots of publicly available information. If there are any concerns or issues related to copyright infringement, please feel free to reach out to me at **hirushaadi@gmail.com** and I will take necessary actions as soon as possible. I do not endorse or encourage any unethical usage of this script and it is intended for educational purposes only. The full responsibility for the use of this script lies solely with the user.
+
+# Versions
+
+## Python Version
+
+- Found inside `./python`
+- By default, the Python version of this program operates without necessitating any human interaction.
+- Slightly resource intensive
+
+## Tampermonkey Version
+
+- Found inside `./tampermonkey`
+- Involves user engagement
+- More time-intensive
+- Yields error-free outcomes, ensuring optimal results
+- Lightweight
