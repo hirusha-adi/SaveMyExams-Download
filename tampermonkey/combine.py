@@ -1,5 +1,17 @@
 import os
-import PyPDF2
+try:
+    import PyPDF2
+except:
+    try:
+        os.system("pip install PyPDF2")
+    finally:
+        try:
+            import PyPDF2
+            print("[+] Installed and Imported PyPDF2")
+        except:
+            print("[ERROR] Unable to install PyPDF2")
+            input("Press [ENTER] to exit.")
+            exit()
 
 current_folder = os.path.split(os.getcwd())[-1]
 
