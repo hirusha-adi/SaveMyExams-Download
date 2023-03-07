@@ -22,6 +22,18 @@
     header.remove()
 
     /*
+    Top Header Bar: <div>
+    class="resource-header"
+    */
+    var resourceheader = document.querySelectorAll('.resource-header')
+    resourceheader.forEach((element) => {
+        element.remove();
+    });
+    // Fix Top Margin
+    const pageElement = document.getElementById("page");
+    pageElement.style.marginTop = "0px";
+
+    /*
     Resource Actions: <div>
     class="resource-actions revision-notes row align-items-center"
     */
@@ -98,6 +110,8 @@
     class="resources-nav"
     */
     document.querySelectorAll('.button-0-3-5.button-d1-0-3-15')[0].remove()
+
+    
 
 })();
 
